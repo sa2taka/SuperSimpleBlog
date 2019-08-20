@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link href="/stylesheet/main.css" rel="stylesheet" />
+</head>
+<body>
+  <header class="mdc-top-app-bar mdc-top-app-bar--fixed" style="background-color: #42bc56">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <span class="mdc-top-app-bar__title"><a class="navbar-anchor" href="/">CSS Proud</a></span>
+      </section>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end navbar-items">
+        <% if user %>
+          <a type="submit" class="navbar-anchor" href="/mypage">マイページ</a>
+          <form action="/logout" method="post" name="form1">
+            <input type="hidden" name="token" value=<%= user.sessionid %>>
+            <a type="submit" class="navbar-anchor" href="javascript:form1.submit()">ログアウト</a>
+          </form>
+        <% else %>
+          <a class="navbar-anchor"  href="/register" >
+            登録
+          </a>
+          <a class="navbar-anchor"  href="/login" >
+            ログイン
+          </a>
+        <% end %>
+      </section>
+    </div>
+  </header>
+
+  <div class="mdc-top-app-bar--fixed-adjust">
+    <div id="main-content">
+      <%= yield %>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<a class="mdc-button mdc-button--raised to-edit-button"  href="/edit">早速CSSを記述する</a>
+<br>
+<a style="margin-top: 0.8em" href="/rules">ルールを確認する</a>
+
+<h2>あなたの投稿したCSS一覧</h2>
+<ul class="style-list">
+<% user.styles.all.each do |style| %>
+  <li><a href="/styles?id=<%= style.id %>"><%= style.id %></a></li>
+<% end %>
+</ul>
