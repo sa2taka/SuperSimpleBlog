@@ -9,6 +9,8 @@ require "sinatra/reloader"
 require 'securerandom'
 
 require_relative './models'
+require_relative './config.rb'
+require_relative './libs/scraper'
 
 class SuperSimpleBlog < Sinatra::Base
   enable :sessions
@@ -119,6 +121,22 @@ class SuperSimpleBlog < Sinatra::Base
     session[:csrf_token] = SecureRandom.base64(64)
 
     redirect "/posts/#{p.id}"
+  end
+
+  get '/report' do
+    @message = ''
+    erb :report
+  end
+
+  post '/report' do
+    url = params[:url]
+
+    unless url.start_with?("https://#{$top_level}") || url.start_with?("http://#{$top_level}")
+      @message = "urlは http(s)://#{$top_level} から始まっている必要があります"
+      return erb :report
+    end
+    Thread.new { Scraper.scrape($top_level, params[:url]) }.run
+    erb :reported
   end
 
   get '/login' do

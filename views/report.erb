@@ -1,0 +1,40 @@
+<h2>脆弱性や問題の報告はこちらへ</h2>
+
+<h4>現在報告されている脆弱性、問題点はこちら</h4>
+<ul>
+  <li>ブログのタイトル検索で、ブログの結果が1件以上ある場合、遅くなる</li>
+</ul>
+
+<h4>解決した脆弱性、問題点はこちら</h4>
+
+<ul>
+  <li>ログイン・登録画面にOpen Redirectの脆弱性を新たにエンドポイントを追加して修正</li>
+  <li>新たに追加したOpen Redirectのエンドポイントで、セミコロンによってURLを区切ることでOpen Redirectに繋がっていた脆弱性を修正</li>
+</ul>
+
+<h4>報告は以下のフォームから</h4>
+
+<p><%= @message %></p>
+
+<form action="/report" name="report_form" method="post" style="margin-top: 2em;">
+  <div class="title-area">
+    <span style="margin: 1em">対象URL</span>
+    <div class="mdc-text-field" style="min-width: 480px;">
+      <input name="url" class="mdc-text-field__input" id="text-field-hero-input" maxlength="64">
+    </div>
+  </div>
+  <label>詳しい事象</label>
+  <div class="mdc-text-field text-field mdc-text-field--fullwidth mdc-text-field--no-label mdc-text-field--textarea">
+    <textarea name="text" placeholder="本文" class="mdc-text-field__input " style="height: 200px; line-height: 1.1em;" maxlength="10000">
+    </textarea>
+    <div class="mdc-notched-outline mdc-notched-outline--upgraded">
+      <div class="mdc-notched-outline__leading"></div>
+      <div class="mdc-notched-outline__trailing"></div>
+    </div>
+  </div>
+  <input type="hidden" name="csrf_token" value="<%= csrf_token %>">
+  <a type="submit" class="mdc-button mdc-button--raised" style="margin-top: 1.2em;"  href="javascript:report_form.submit()">投稿する</a>
+</form>
+
+<!-- empty -->
+<div style="height: 20vh"></div>
