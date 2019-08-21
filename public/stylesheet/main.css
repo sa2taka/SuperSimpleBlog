@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  font-variant-ligatures: normal;
+}
+
+a.navbar-anchor,
+a.navbar-anchor:visited {
+  color: white;
+  text-decoration: none;
+}
+
+#main-content {
+  width: 80%;
+  margin-top: 14px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.navbar-items > * {
+  margin-right: 1.4em;
+}
+
+.button-area {
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  flex-flow: column;
+}
+
+.button-area > * {
+  margin-top: 12px;
+}
