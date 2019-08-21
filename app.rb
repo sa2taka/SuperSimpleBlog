@@ -29,6 +29,15 @@ class SuperSimpleBlog < Sinatra::Base
     erb :top
   end
 
+  get '/edit' do
+    unless User.find_by(id: session[:user_id])
+      @message = 'ブログの編集にはユーザーの登録が必要です'
+      return erb :register
+    end
+
+    erb :edit
+  end
+
   get '/login' do
     unless (!session[:user_id] || session[:user_id].empty?)
       redirect '/'
