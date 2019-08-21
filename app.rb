@@ -50,7 +50,9 @@ class SuperSimpleBlog < Sinatra::Base
       return erb :register
     end
 
-    @posts = User.find(session[:user_id])&.posts
+    @posts = User.find(session[:user_id])&.posts.where('title like ?', "#{params[:query]}%" || '%%')
+    
+    sleep 1 if @posts.exists? # 検索した結果が存在した場合の重い処理
 
     erb :posts
   end

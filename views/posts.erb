@@ -1,4 +1,14 @@
 <a class="mdc-button mdc-button--raised" style="margin-bottom: 1.2em;"  href="/edit">新しいブログを投稿する</a>
+
+<form action='/posts' method='get'>
+  <span style="margin: auto 1em">検索クエリ(前方一致検索)</span>
+  <div class="mdc-text-field">
+    <input name="query" class="mdc-text-field__input" id="text-field-hero-input" maxlength="16">
+  </div>
+
+  <input type="submit" class="mdc-button mdc-button--outlined" value="検索"/>
+</form>
+
 <% unless @posts.exists? %>
   <h2>投稿したブログがありません</h2>
 <% else %>
