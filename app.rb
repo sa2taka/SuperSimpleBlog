@@ -37,8 +37,9 @@ class SuperSimpleBlog < Sinatra::Base
 
   get '/edit' do
     unless User.find_by(id: session[:user_id])
-      @message = 'ブログの編集にはユーザーの登録が必要です'
-      return erb :register
+      @message = 'ブログの編集にはユーザーのログインが必要です'
+      @path = request.path
+      return erb :login
     end
 
     erb :edit
@@ -46,8 +47,9 @@ class SuperSimpleBlog < Sinatra::Base
 
   get '/posts' do
     unless User.find_by(id: session[:user_id])
-      @message = 'ブログの閲覧にはユーザーの登録が必要です'
-      return erb :register
+      message = 'ブログの閲覧にはユーザーのログインが必要です'
+      @path = request.path
+      return erb :login
     end
 
     @posts = User.find(session[:user_id])&.posts.where('title like ?', "#{params[:query]}%" || '%%')
@@ -59,8 +61,9 @@ class SuperSimpleBlog < Sinatra::Base
 
   get '/posts/:id' do
     unless User.find_by(id: session[:user_id])
-      @message = 'ブログの閲覧にはユーザーの登録が必要です'
-      return erb :register
+      @message = 'ブログの閲覧にはユーザーのログインが必要です'
+      @path = request.path
+      return erb :login
     end
 
     @post = User.find(session[:user_id])&.posts.find_by(id: params[:id])
@@ -70,6 +73,16 @@ class SuperSimpleBlog < Sinatra::Base
     end
 
     erb :post
+  end
+
+  get '/redirect' do
+    @uri = params[:uri] || ''
+
+    if @uri[0] != '/'
+      return erb :non_permit
+    end
+
+    erb :redirect
   end
 
   post '/post' do
@@ -112,11 +125,15 @@ class SuperSimpleBlog < Sinatra::Base
     unless (!session[:user_id] || session[:user_id].empty?)
       redirect '/'
     end
+
+    @path = request.path
     @message = ''
+    
     erb :login
   end
 
   post '/login' do
+    @path = request.path
     if params[:name]&.empty? || params[:password]&.empty?
       @message = 'ユーザー名またはパスワードが間違っています'
       return erb :login
@@ -134,7 +151,7 @@ class SuperSimpleBlog < Sinatra::Base
       session[:user_id] = user.id
       session[:csrf_token] = SecureRandom.base64(64)
 
-      redirect '/'
+      redirect "/redirect?uri=#{params[:path]}"
     else
       @message = 'ユーザー名またはパスワードが間違っています'
       return erb :login
@@ -145,6 +162,8 @@ class SuperSimpleBlog < Sinatra::Base
     unless (!session[:user_id] || session[:user_id].empty?)
       redirect '/'
     end
+
+    @path = request.path
     erb :register
   end
 
@@ -166,7 +185,7 @@ class SuperSimpleBlog < Sinatra::Base
 
     user = User.create(params[:name], params[:password])
     session[:user_id] = user.id
-    redirect '/'
+    redirect "/redirect?uri=#{params[:path]}"
   end
 
   post '/logout' do
