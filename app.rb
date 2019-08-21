@@ -72,6 +72,16 @@ class SuperSimpleBlog < Sinatra::Base
     erb :post
   end
 
+  get '/redirect' do
+    @uri = params[:uri] || ''
+
+    if @uri[0] != '/'
+      return erb :non_permit
+    end
+
+    erb :redirect
+  end
+
   post '/post' do
     unless User.find_by(id: session[:user_id])
       @message = 'ブログの編集にはユーザーの登録が必要です'
