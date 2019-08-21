@@ -126,7 +126,7 @@ class SuperSimpleBlog < Sinatra::Base
       redirect '/'
     end
 
-    @path = request.path
+    @path = request.path.delete(';')
     @message = ''
     
     erb :login
