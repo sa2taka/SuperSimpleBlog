@@ -121,6 +121,14 @@ class SuperSimpleBlog < Sinatra::Base
     redirect "/posts/#{p.id}"
   end
 
+  get '/report' do
+    erb :report
+  end
+
+  post '/report' do
+
+  end
+
   get '/login' do
     unless (!session[:user_id] || session[:user_id].empty?)
       redirect '/'
