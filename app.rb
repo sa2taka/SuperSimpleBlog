@@ -38,6 +38,36 @@ class SuperSimpleBlog < Sinatra::Base
     erb :edit
   end
 
+  post '/post' do
+    unless User.find_by(id: session[:user_id])
+      @message = 'ブログの編集にはユーザーの登録が必要です'
+      return erb :register
+    end
+
+    if params[:title]&.length > 64 || params[:text]&.length > 10000
+      redirect '/edit'
+    end
+
+    user = User.find(session[:user_id])
+
+    id = Base64.urlsafe_encode64(Digest::SHA256.digest(Time.now.to_s + user.id))
+
+    p = Post.new
+    if Post.exists? params[:id]
+      p = Post.find(params[:id])
+    else
+      p.id = id
+      p.user_id = user.id
+    end
+
+    p.title = params[:title]
+    p.text = params[:text]
+
+    p.save
+
+    redirect "/posts/#{p.id}"
+  end
+
   get '/login' do
     unless (!session[:user_id] || session[:user_id].empty?)
       redirect '/'
@@ -80,6 +110,11 @@ class SuperSimpleBlog < Sinatra::Base
   post '/register' do
     if params[:name]&.empty? || params[:password]&.empty?
       @message = 'ユーザー名、パスワードは必須項目です'
+      return erb :register
+    end
+
+    if params[:name].length > 16
+      @message = 'ユーザー名は16文字以下である必要があります'
       return erb :register
     end
 

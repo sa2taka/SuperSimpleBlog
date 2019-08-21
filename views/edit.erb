@@ -1,12 +1,12 @@
-<form action="/post" name="preview_form" method="post" style="margin-top: 2em;">
+<form action="/post" name="post_form" method="post" style="margin-top: 2em;">
   <div class="title-area">
     <span style="margin: 1em">タイトル</span>
     <div class="mdc-text-field">
-      <input name="title" class="mdc-text-field__input" id="text-field-hero-input">
+      <input name="title" class="mdc-text-field__input" id="text-field-hero-input" maxlength="64">
     </div>
   </div>
   <div class="mdc-text-field text-field mdc-text-field--fullwidth mdc-text-field--no-label mdc-text-field--textarea">
-    <textarea name="text" placeholder="本文" class="mdc-text-field__input " style="height: 640px; line-height: 1.1em;">
+    <textarea name="text" placeholder="本文" class="mdc-text-field__input " style="height: 640px; line-height: 1.1em;" maxlength="10000">
     </textarea>
     <div class="mdc-notched-outline mdc-notched-outline--upgraded">
       <div class="mdc-notched-outline__leading"></div>
@@ -14,7 +14,7 @@
     </div>
   </div>
   <input type="hidden" name="id" value="<%= @id || ''%>">
-  <a type="submit" class="mdc-button mdc-button--raised" style="margin-top: 1.2em;"  href="javascript:preview_form.submit()">投稿する</a>
+  <a type="submit" class="mdc-button mdc-button--raised" style="margin-top: 1.2em;"  href="javascript:post_form.submit()">投稿する</a>
 </form>
 
 <!-- empty -->
