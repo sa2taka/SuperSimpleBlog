@@ -3,8 +3,10 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/base'
+require 'rack/protection'
 require 'active_record'
 require "sinatra/reloader" 
+require 'securerandom'
 
 require_relative './models'
 
@@ -16,6 +18,10 @@ class SuperSimpleBlog < Sinatra::Base
   end
 
   helpers do
+    def csrf_token
+      session[:csrf_token]
+    end
+
     def user
       User.find_by(id: session[:user_id])
     end
@@ -54,6 +60,10 @@ class SuperSimpleBlog < Sinatra::Base
       return erb :register
     end
 
+    unless params[:csrf_token] == session[:csrf_token]
+      redirect '/edit'
+    end
+
     if params[:title]&.length > 64 || params[:text]&.length > 10000
       redirect '/edit'
     end
@@ -74,6 +84,8 @@ class SuperSimpleBlog < Sinatra::Base
     p.text = params[:text]
 
     p.save
+
+    session[:csrf_token] = SecureRandom.base64(64)
 
     redirect "/posts/#{p.id}"
   end
@@ -102,6 +114,7 @@ class SuperSimpleBlog < Sinatra::Base
 
     if user.authenticate(params[:password])
       session[:user_id] = user.id
+      session[:csrf_token] = SecureRandom.base64(64)
 
       redirect '/'
     else
