@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   validates :id, presence: true, uniqueness: true
   validates :password, presence: true
 
+  has_many :posts
+
   def self.create(name, new_password)
     user = User.new
     user.id = name
