@@ -10,13 +10,11 @@
   <header class="mdc-top-app-bar mdc-top-app-bar--fixed" style="background-color: #42bc56">
     <div class="mdc-top-app-bar__row">
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <span class="mdc-top-app-bar__title"><a class="navbar-anchor" href="/">CSS Proud</a></span>
+        <span class="mdc-top-app-bar__title"><a class="navbar-anchor" href="/">Super Simple Blog</a></span>
       </section>
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end navbar-items">
         <% if user %>
-          <a type="submit" class="navbar-anchor" href="/mypage">マイページ</a>
           <form action="/logout" method="post" name="form1">
-            <input type="hidden" name="token" value=<%= user.sessionid %>>
             <a type="submit" class="navbar-anchor" href="javascript:form1.submit()">ログアウト</a>
           </form>
         <% else %>
