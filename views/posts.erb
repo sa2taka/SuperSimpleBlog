@@ -1,0 +1,12 @@
+<a class="mdc-button mdc-button--raised" style="margin-bottom: 1.2em;"  href="/edit">新しいブログを投稿する</a>
+<% unless @posts.exists? %>
+  <h2>投稿したブログがありません</h2>
+<% else %>
+<h2>投稿一覧</h2>
+<div class="posts">
+  <% @posts.each do |post| %>
+    <a class="post-link" href="posts/<%= post.id %>"><%= post.title %></a>
+  <% end %>
+</div>
+
+<% end %>

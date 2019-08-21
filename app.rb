@@ -44,7 +44,23 @@ class SuperSimpleBlog < Sinatra::Base
     erb :edit
   end
 
+  get '/posts' do
+    unless User.find_by(id: session[:user_id])
+      @message = 'ブログの閲覧にはユーザーの登録が必要です'
+      return erb :register
+    end
+
+    @posts = User.find(session[:user_id])&.posts
+
+    erb :posts
+  end
+
   get '/posts/:id' do
+    unless User.find_by(id: session[:user_id])
+      @message = 'ブログの閲覧にはユーザーの登録が必要です'
+      return erb :register
+    end
+
     @post = User.find(session[:user_id])&.posts.find_by(id: params[:id])
 
     if @post.nil?

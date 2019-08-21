@@ -38,3 +38,12 @@ a.navbar-anchor:visited {
   width: 100%;
   margin-bottom: 2em;
 }
+
+.posts {
+  display: flex;
+  flex-flow: column;
+}
+
+.post-link { 
+  
+}
