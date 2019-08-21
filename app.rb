@@ -38,6 +38,16 @@ class SuperSimpleBlog < Sinatra::Base
     erb :edit
   end
 
+  get '/posts/:id' do
+    @post = User.find(session[:user_id])&.posts.find_by(id: params[:id])
+
+    if @post.nil?
+      return erb :unknown
+    end
+
+    erb :post
+  end
+
   post '/post' do
     unless User.find_by(id: session[:user_id])
       @message = 'ブログの編集にはユーザーの登録が必要です'
