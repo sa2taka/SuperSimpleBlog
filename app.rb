@@ -78,9 +78,10 @@ class SuperSimpleBlog < Sinatra::Base
   end
 
   get '/redirect' do
-    @uri = params[:uri] || ''
+    @uri = (params[:uri] || '').delete(';')
 
-    if @uri[0] == ''
+
+    if @uri == ''
       @uri = '/'
       return erb :redirect
     end
