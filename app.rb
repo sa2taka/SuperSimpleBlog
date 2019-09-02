@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # frozen_string_literal: false
 
 require 'rubygems'
@@ -209,6 +210,7 @@ class SuperSimpleBlog < Sinatra::Base
 
     user = User.create(params[:name], params[:password])
     session[:user_id] = user.id
+    session[:csrf_token] = SecureRandom.base64(64)
     redirect "/redirect?uri=#{params[:path]}"
   end
 
