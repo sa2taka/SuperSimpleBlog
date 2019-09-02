@@ -80,6 +80,11 @@ class SuperSimpleBlog < Sinatra::Base
   get '/redirect' do
     @uri = params[:uri] || ''
 
+    if @uri[0] == ''
+      @uri = '/'
+      return erb :redirect
+    end
+
     if @uri[0] != '/'
       return erb :non_permit
     end
