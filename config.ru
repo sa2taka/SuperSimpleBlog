@@ -1,6 +1,6 @@
 require './app.rb'
 require_relative './libs/append_csp.rb'
 
-use AppendCsp
+# use AppendCsp
 
 run SuperSimpleBlog
