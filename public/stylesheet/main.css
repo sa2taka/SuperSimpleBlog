@@ -9,6 +9,17 @@ a.navbar-anchor:visited {
   text-decoration: none;
 }
 
+.navbar-button {
+  color: white;
+  text-decoration: none;
+  background-color: initial;
+  box-sizing: initial;
+  padding: initial;
+  border-width: initial;
+  border-style: initial;
+  font-size: 16px;
+}
+
 #main-content {
   width: 80%;
   margin-top: 14px;

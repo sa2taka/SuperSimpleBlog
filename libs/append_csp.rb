@@ -5,7 +5,7 @@ class AppendCsp
 
   def call(env)
     res = @app.call(env)
-    res[1]['Content-Security-Policy'] = "default-src 'self' unpkg.com fonts.googleapis.com"
+    res[1]['Content-Security-Policy'] = "script-src 'self' unpkg.com"
     res
   end
 end
