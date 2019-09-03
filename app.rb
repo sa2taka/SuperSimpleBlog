@@ -56,7 +56,7 @@ class SuperSimpleBlog < Sinatra::Base
     end
 
     query = (params[:query] || '').gsub(/([\[\]*?])/, '[\1]')
-    @posts = User.find(session[:user_id])&.posts.where("title glob '?'", "#{query}*" || '**')
+    @posts = User.find(session[:user_id])&.posts.where("title glob ?", "#{query}*" || '**')
     
     sleep 1 if @posts.exists? # 検索した結果が存在した場合の重い処理
 
