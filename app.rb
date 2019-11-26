@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # frozen_string_literal: false
 
 require 'rubygems'
@@ -6,7 +5,7 @@ require 'sinatra'
 require 'sinatra/base'
 require 'rack/protection'
 require 'active_record'
-require "sinatra/reloader" 
+require 'sinatra/reloader'
 require 'securerandom'
 
 require_relative './models'
@@ -56,8 +55,8 @@ class SuperSimpleBlog < Sinatra::Base
     end
 
     query = (params[:query] || '').gsub(/([\[\]*?])/, '[\1]')
-    @posts = User.find(session[:user_id])&.posts.where("title glob ?", "#{query}*" || '**')
-    
+    @posts = User.find(session[:user_id])&.posts.where('title glob ?', "#{query}*" || '**')
+
     sleep 1 if @posts.exists? # 検索した結果が存在した場合の重い処理
 
     erb :posts
@@ -72,9 +71,7 @@ class SuperSimpleBlog < Sinatra::Base
 
     @post = User.find(session[:user_id])&.posts.find_by(id: params[:id])
 
-    if @post.nil?
-      return erb :unknown
-    end
+    return erb :unknown if @post.nil?
 
     erb :post
   end
@@ -82,15 +79,12 @@ class SuperSimpleBlog < Sinatra::Base
   get '/redirect' do
     @uri = (params[:uri] || '').delete(';')
 
-
     if @uri == ''
       @uri = '/'
       return erb :redirect
     end
 
-    if @uri[0] != '/'
-      return erb :non_permit
-    end
+    return erb :non_permit if @uri[0] != '/'
 
     erb :redirect
   end
@@ -101,11 +95,9 @@ class SuperSimpleBlog < Sinatra::Base
       return erb :register
     end
 
-    unless params[:csrf_token] == session[:csrf_token]
-      redirect '/edit'
-    end
+    redirect '/edit' unless params[:csrf_token] == session[:csrf_token]
 
-    if params[:title]&.length > 64 || params[:text]&.length > 10000
+    if params[:title]&.length > 64 || params[:text]&.length > 10_000
       redirect '/edit'
     end
 
@@ -139,22 +131,16 @@ class SuperSimpleBlog < Sinatra::Base
   post '/report' do
     url = params[:url]
 
-    unless url.start_with?("https://#{$top_level}") || url.start_with?("http://#{$top_level}")
-      @message = "urlは http(s)://#{$top_level} から始まっている必要があります"
-      return erb :report
-    end
     Thread.new { Scraper.scrape($top_level, params[:url]) }.run
     erb :reported
   end
 
   get '/login' do
-    unless (!session[:user_id] || session[:user_id].empty?)
-      redirect '/'
-    end
+    redirect '/' unless !session[:user_id] || session[:user_id].empty?
 
     @path = request.path.delete(';')
     @message = ''
-    
+
     erb :login
   end
 
@@ -185,9 +171,7 @@ class SuperSimpleBlog < Sinatra::Base
   end
 
   get '/register' do
-    unless (!session[:user_id] || session[:user_id].empty?)
-      redirect '/'
-    end
+    redirect '/' unless !session[:user_id] || session[:user_id].empty?
 
     @path = request.path
     erb :register

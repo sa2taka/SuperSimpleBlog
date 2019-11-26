@@ -16,10 +16,10 @@ class Scraper
     client.open_timeout = 120
     driver = Selenium::WebDriver.for :chrome, http_client: client, options: options
     driver.manage.timeouts.implicit_wait = 4
-    driver.get("http://#{top_level.to_s}")
+    driver.get("http://#{top_level}")
     sleep 6
 
-    driver.get("http://#{top_level.to_s}/login")
+    driver.get('http://localhost:9292/login')
     element = driver.find_element(:name, 'name')
     element.send_keys 'admin'
     element = driver.find_element(:name, 'password')
